@@ -787,7 +787,7 @@ class MultiplayerLobbyScreen(game: RetrowarsGame, serverToConnectTo: ServerHostA
                 x = 0
             }
 
-            val isSelected = false
+            val isSelected = games.contains(game)
             wrapper.add(makeGameButton(game, isSelected) {
                 val newSelected = if (isSelected) {
                     games - game
@@ -1145,7 +1145,7 @@ interface UiState {
 class Splash: UiState {
     override fun consumeAction(action: Action): UiState {
         return when(action) {
-            is Action.CustomiseServer -> CustomisingServer(Games.allAvailable)
+            is Action.CustomiseServer -> CustomisingServer(emptyList())
             is Action.FindPublicServers -> SearchingForPublicServers()
             is Action.FindLocalServer -> SearchingForLocalServer()
             else -> unsupported(action)
