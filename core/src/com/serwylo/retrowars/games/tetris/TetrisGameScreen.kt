@@ -17,6 +17,8 @@ import com.serwylo.retrowars.input.TetrisSoftController
 import com.serwylo.retrowars.ui.ENEMY_ATTACK_COLOUR
 import com.serwylo.retrowars.utils.Options
 
+import com.serwylo.retrowars.net.RetrowarsClient
+
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
     companion object {
@@ -268,12 +270,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
     }
 
     private fun chooseNewTetronimo() {
-        state.currentX = TetrisGameState.CELLS_WIDE / 2 - 1
-        state.currentY = 0
-        state.currentPieceRotations = state.nextPieceRotations
-        state.currentPiece = state.currentPieceRotations[0]
-
-        state.nextPieceRotations = state.randomTetronimo()
+        state.advanceToNextPiece()
     }
 
     override fun onReceiveDamage(strength: Int) {

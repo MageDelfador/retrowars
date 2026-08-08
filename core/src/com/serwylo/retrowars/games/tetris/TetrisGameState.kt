@@ -81,7 +81,15 @@ class TetrisGameState(seed: Long? = null) {
     var currentY = 0
 
     var nextPieceRotations: TetronimoOrientations = randomTetronimo()
-
+	
+    fun advanceToNextPiece() {
+        currentX = CELLS_WIDE / 2 - 1
+        currentY = 0
+        currentPieceRotations = nextPieceRotations
+        currentPiece = currentPieceRotations[0]
+        nextPieceRotations = randomTetronimo()
+    }
+	
 	private fun randomTetronimo(): TetronimoOrientations =
         Tetronimos.all[random.nextInt(Tetronimos.all.size)]
 }
