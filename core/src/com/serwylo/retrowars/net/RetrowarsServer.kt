@@ -653,7 +653,7 @@ class WebSocketNetworkServer(
 
             routing {
 
-                if (rooms.getName() != "singleLocalRoom") {
+
                     get("/info") {
                         call.respond(ServerInfoDTO(
                             versionCode = AppProperties.appVersionCode,
@@ -670,7 +670,7 @@ class WebSocketNetworkServer(
                             supportedGames = retrowarsServer.getSupportedGames().map { it.id },
                         ))
                     }
-                }
+
 
                 webSocket("/ws") {
 
