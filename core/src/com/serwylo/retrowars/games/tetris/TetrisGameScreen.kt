@@ -17,6 +17,9 @@ import com.serwylo.retrowars.input.TetrisSoftController
 import com.serwylo.retrowars.ui.ENEMY_ATTACK_COLOUR
 import com.serwylo.retrowars.utils.Options
 
+import com.serwylo.retrowars.net.RetrowarsClient
+import kotlin.random.Random
+
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
     companion object {
@@ -24,7 +27,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         const val TAG = "TetrisGameScreen"
     }
 
-    private val state = TetrisGameState()
+    private lateinit var state: TetrisGameState
     private val sounds = TetrisSoundLibrary()
     override fun getSoundLibrary() = sounds
 
@@ -38,6 +41,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
             Random.Default
         }
         state = TetrisGameState(random)
+
         addGameScoreToHUD(linesLabel)
     }
 
@@ -112,7 +116,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
 
         sounds.dropPiece()
         storeTetronimoInGrid(state.currentPiece, state.currentX, newY - 1)
-        chooseNewTetronimo()
+        state.chooseNewTetronimo()
 
         if (!isLegalMove(state.currentPiece, state.currentX, state.currentY)) {
             sounds.screenFull()
@@ -173,7 +177,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
 
             sounds.dropPiece()
             storeTetronimoInGrid(state.currentPiece, state.currentX, state.currentY)
-            chooseNewTetronimo()
+            state.chooseNewTetronimo()
 
             if (!isLegalMove(state.currentPiece, state.currentX, state.currentY)) {
                 sounds.screenFull()
