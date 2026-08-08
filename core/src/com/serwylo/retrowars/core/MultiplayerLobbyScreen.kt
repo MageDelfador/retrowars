@@ -787,7 +787,7 @@ class MultiplayerLobbyScreen(game: RetrowarsGame, serverToConnectTo: ServerHostA
                 x = 0
             }
 
-            val isSelected = games.contains(game)
+            val isSelected = false
             wrapper.add(makeGameButton(game, isSelected) {
                 val newSelected = if (isSelected) {
                     games - game

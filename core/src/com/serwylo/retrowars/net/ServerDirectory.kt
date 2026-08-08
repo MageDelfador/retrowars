@@ -170,8 +170,11 @@ private val httpClient = HttpClient(CIO) {
 }
 
 suspend fun fetchPublicServerList(): List<ServerMetadataDTO> {
-    val url = "https://retrowars.github.io/retrowars-servers/.well-known/com.serwylo.retrowars-servers.json"
-    return httpClient.get(url)
+    return listOf(
+        ServerMetadataDTO("192.168.49.1", 8080),
+        ServerMetadataDTO("10.55.55.2", 8080),
+        ServerMetadataDTO("10.55.55.3", 8080)
+    )
 }
 
 suspend fun fetchServerInfo(server: ServerMetadataDTO): ServerInfoDTO? {
