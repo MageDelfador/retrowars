@@ -19,6 +19,7 @@ import com.serwylo.retrowars.utils.Options
 
 import com.serwylo.retrowars.net.RetrowarsClient
 import kotlin.random.Random
+import com.serwylo.retrowars.games.tetris.CellState
 
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
