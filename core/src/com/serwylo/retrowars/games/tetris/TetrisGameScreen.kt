@@ -17,10 +17,6 @@ import com.serwylo.retrowars.input.TetrisSoftController
 import com.serwylo.retrowars.ui.ENEMY_ATTACK_COLOUR
 import com.serwylo.retrowars.utils.Options
 
-import com.serwylo.retrowars.net.RetrowarsClient
-import kotlin.random.Random
-import com.serwylo.retrowars.games.tetris.CellState
-
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
     companion object {
@@ -28,22 +24,17 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         const val TAG = "TetrisGameScreen"
     }
 
-    private lateinit var state: TetrisGameState
+    private val state = TetrisGameState()
     private val sounds = TetrisSoundLibrary()
     override fun getSoundLibrary() = sounds
 
     private val linesLabel = Label("0 lines", game.uiAssets.getStyles().label.large)
 
     init {
-        addGameScoreToHUD(linesLabel)
-
         val client = RetrowarsClient.get()
-        val random = if (client != null && client.gameSeed != null) {
-            Random(client.gameSeed!!)
-        } else {
-            Random.Default
-        }
-        state = TetrisGameState(random)
+        val seed = client?.gameSeed
+        state = if (seed != null) TetrisGameState(seed) else TetrisGameState()
+        addGameScoreToHUD(linesLabel)
     }
 
     override fun show() {
@@ -117,7 +108,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
 
         sounds.dropPiece()
         storeTetronimoInGrid(state.currentPiece, state.currentX, newY - 1)
-        state.chooseNewTetronimo()
+        chooseNewTetronimo()
 
         if (!isLegalMove(state.currentPiece, state.currentX, state.currentY)) {
             sounds.screenFull()
@@ -178,7 +169,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
 
             sounds.dropPiece()
             storeTetronimoInGrid(state.currentPiece, state.currentX, state.currentY)
-            state.chooseNewTetronimo()
+            chooseNewTetronimo()
 
             if (!isLegalMove(state.currentPiece, state.currentX, state.currentY)) {
                 sounds.screenFull()
@@ -277,7 +268,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         state.currentPieceRotations = state.nextPieceRotations
         state.currentPiece = state.currentPieceRotations[0]
 
-        state.nextPieceRotations = Tetronimos.random(random)
+        state.nextPieceRotations = Tetronimos.random()
     }
 
     override fun onReceiveDamage(strength: Int) {

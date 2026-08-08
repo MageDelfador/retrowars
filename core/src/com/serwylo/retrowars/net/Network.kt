@@ -256,12 +256,10 @@ object Network {
         )
 
         class OnStartGame(
-            @Since(9.0)
-			@SerializedName("s")
-			val seed: Long
-		) {
-			constructor() : this(0)
-		}
+            @Since(70.0)
+            @SerializedName("s")
+            val seed: Long = 0
+        )
 
     }
 
