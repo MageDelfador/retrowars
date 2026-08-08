@@ -3,6 +3,7 @@ package com.serwylo.retrowars.games.tetris
 import com.serwylo.retrowars.games.tetris.entities.Tetronimo
 import com.serwylo.retrowars.games.tetris.entities.TetronimoOrientations
 import com.serwylo.retrowars.games.tetris.entities.Tetronimos
+import kotlin.random.Random
 
 class TetrisGameState(private val random: Random = Random.Default) {
 
