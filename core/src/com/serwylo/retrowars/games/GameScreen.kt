@@ -68,7 +68,6 @@ abstract class GameScreen(
 
     private var score = 0L
 
-    private var multiplayerGameStarted = false
     /**
      * Bit of a hack, but we end up in a loop whereby we send
      */
@@ -133,11 +132,7 @@ abstract class GameScreen(
             playerStatusChangedListener = { player, status -> handlePlayerStatusChange(player, status) },
             scoreChangedListener = { _, _ -> handleScoreChange() },
             scoreBreakpointListener = { player, strength -> handleBreakpointChange(player, strength) },
-			startGameListener = {
-				multiplayerGameStarted = true
-				changeState(State.Playing)
-				onStartMultiplayerGame()
-			}
+			startGameListener = { onStartMultiplayerGame() }
         )
     }
 
@@ -460,9 +455,7 @@ abstract class GameScreen(
             if (!getSoundLibrary().isLoaded()) {
                 return
             }
-			if (client != null && !multiplayerGameStarted) {
-				return
-			}
+
             Gdx.app.log(TAG, "Finished loading sounds, will start game.")
             changeState(State.Playing)
         }
@@ -592,11 +585,7 @@ abstract class GameScreen(
             }
         }
     }
-	
-	protected open fun onStartMultiplayerGame() {
 
-	}
-	
     override fun resume() {
         isPaused = false
         hideInGameMenu()
