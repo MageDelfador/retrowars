@@ -171,7 +171,7 @@ class RetrowarsClient(host: String, port: Int) {
                         is Network.Client.OnPlayerScored -> onScoreChanged(obj.id, obj.score)
                         is Network.Client.OnPlayerStatusChange -> onStatusChanged(obj.id, obj.status)
                         is Network.Client.OnReturnToLobby -> onReturnToLobby(obj.newGames)
-                        is Network.Client.OnStartGame -> onStartGame()
+                        is Network.Client.OnStartGame -> onStartGame(obj.seed)
                         is Network.Client.OnFatalError -> onFatalError(obj.code, obj.message)
                     }
                 }
@@ -195,10 +195,13 @@ class RetrowarsClient(host: String, port: Int) {
         client.disconnect() // This will trigger an onDisconnected event, which will in turn then notify via the networkCloseListener. A bit messy, but should work.
     }
 
-    private fun onStartGame() {
+    var gameSeed: Long? = null
+	
+    private fun onStartGame(seed: Long) {
         // We reuse the same servers/clients many time over if you finish a game and immediately
         // start a new one. Therefore we need to forget all we know about peoples scores before
         // continuing with a new game.
+		gameSeed = seed
         lastSurvivor = null
         scores.clear()
         scoreBreakpoints.clear()
@@ -207,7 +210,7 @@ class RetrowarsClient(host: String, port: Int) {
             scores[it] = 0L
         }
 
-        Gdx.app.debug(TAG, "Game started. Invoking RetrowarsClient.startGameListener")
+        Gdx.app.debug(TAG, "Game started with seed $seed. Invoking RetrowarsClient.startGameListener")
         startGameListener?.invoke()
     }
 
@@ -270,6 +273,7 @@ class RetrowarsClient(host: String, port: Int) {
     }
 
     private fun onReturnToLobby(playerIdToNewGame: Map<Long, String>) {
+	    gameSeed = null
         Gdx.app.log(TAG, "Received return to lobby request.")
 
         players.forEach {

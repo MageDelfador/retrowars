@@ -255,7 +255,13 @@ object Network {
 
         )
 
-        class OnStartGame
+        class OnStartGame(
+            @Since(9.0)
+			@SerializedName("s")
+			val seed: Long
+		) {
+			constructor() : this(0)
+		}
 
     }
 

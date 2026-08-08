@@ -211,4 +211,5 @@ object Tetronimos {
 
     fun random(): TetronimoOrientations = all.random()
 
+    fun random(random: Random): TetronimoOrientations = all.random(random)
 }

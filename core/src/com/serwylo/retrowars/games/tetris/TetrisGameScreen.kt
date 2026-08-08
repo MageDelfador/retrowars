@@ -31,6 +31,13 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
     private val linesLabel = Label("0 lines", game.uiAssets.getStyles().label.large)
 
     init {
+        val client = RetrowarsClient.get()
+        val random = if (client != null && client.gameSeed != null) {
+            Random(client.gameSeed!!)
+        } else {
+            Random.Default
+        }
+        state = TetrisGameState(random)
         addGameScoreToHUD(linesLabel)
     }
 
@@ -265,7 +272,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         state.currentPieceRotations = state.nextPieceRotations
         state.currentPiece = state.currentPieceRotations[0]
 
-        state.nextPieceRotations = Tetronimos.random()
+        state.nextPieceRotations = Tetronimos.random(random)
     }
 
     override fun onReceiveDamage(strength: Int) {

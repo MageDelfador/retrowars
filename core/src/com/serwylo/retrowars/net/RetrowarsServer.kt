@@ -562,7 +562,8 @@ class RetrowarsServer(private val platform: Platform, private val config: Config
         room.scores.clear()
         room.lastGame = Date()
         room.players.onEach { it.status = Player.Status.playing }
-        room.sendToAll(Network.Client.OnStartGame(), connections)
+		val seed = Random.nextLong()
+        room.sendToAll(Network.Client.OnStartGame(seed), connections)
 
         lastGame = room.lastGame
     }

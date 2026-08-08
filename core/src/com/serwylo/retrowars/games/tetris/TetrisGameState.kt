@@ -4,7 +4,7 @@ import com.serwylo.retrowars.games.tetris.entities.Tetronimo
 import com.serwylo.retrowars.games.tetris.entities.TetronimoOrientations
 import com.serwylo.retrowars.games.tetris.entities.Tetronimos
 
-class TetrisGameState() {
+class TetrisGameState(private val random: Random = Random.Default) {
 
     companion object {
 
@@ -71,12 +71,12 @@ class TetrisGameState() {
 
     var lines: Int = 0
 
-    var currentPieceRotations: TetronimoOrientations = Tetronimos.random()
+    var currentPieceRotations: TetronimoOrientations = Tetronimos.random(random)
     var currentPiece: Tetronimo = currentPieceRotations[0]
     var currentX = CELLS_WIDE / 2 - 1
     var currentY = 0
 
-    var nextPieceRotations: TetronimoOrientations = Tetronimos.random()
+    var nextPieceRotations: TetronimoOrientations = Tetronimos.random(random)
 
 }
 
