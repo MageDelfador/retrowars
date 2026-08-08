@@ -692,8 +692,7 @@ class MultiplayerLobbyScreen(game: RetrowarsGame, serverToConnectTo: ServerHostA
                 }
 
             // Right now we don't yet support private rooms (they will require an invite mechanism to work).
-            } else if (info.type == "publicRandomRooms") {
-
+            } else {
                 try {
                     Gdx.app.log(TAG, "Found stats for ${server.hostname} [rooms: ${info.currentRoomCount}, players: ${info.currentPlayerCount}, last game: ${info.lastGameTimestamp}].")
                     activeServers = activeServers.plus(ServerDetails(
@@ -713,9 +712,6 @@ class MultiplayerLobbyScreen(game: RetrowarsGame, serverToConnectTo: ServerHostA
                         info.getSupportedGameDetails(),
                         pingTime.toInt(),
                     )).sortedBy { serverDetails ->
-                        // We could sort by ping time, but it just isn't the only relevant metric here.
-                        // Equally we could sort by most active servers first, but again, may not be ideal.
-                        // As such, lets just let the authors of the server metadata file decide on the order.
                         allServers.map { it.hostname }.indexOf(serverDetails.hostname)
                     }
                 } catch (e: Exception) {
