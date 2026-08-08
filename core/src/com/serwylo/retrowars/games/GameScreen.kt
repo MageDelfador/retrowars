@@ -141,6 +141,14 @@ abstract class GameScreen(
         )
     }
 
+	protected open fun onStartMultiplayerGame() {
+		score = 0L
+		isEnding = false
+		if (state == State.Finished) {
+			changeState(State.Playing)
+		}
+	}
+
     private fun changeState(newState: State) {
         previousState = state
         state = newState
