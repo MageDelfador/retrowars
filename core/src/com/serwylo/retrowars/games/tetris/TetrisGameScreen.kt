@@ -17,6 +17,9 @@ import com.serwylo.retrowars.input.TetrisSoftController
 import com.serwylo.retrowars.ui.ENEMY_ATTACK_COLOUR
 import com.serwylo.retrowars.utils.Options
 
+import com.serwylo.retrowars.net.RetrowarsClient
+import kotlin.random.Random
+
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
     companion object {
@@ -26,15 +29,20 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
 
     private val state = TetrisGameState()
     private val sounds = TetrisSoundLibrary()
+	private lateinit var random: Random
     override fun getSoundLibrary() = sounds
 
     private val linesLabel = Label("0 lines", game.uiAssets.getStyles().label.large)
 
     init {
-        val client = RetrowarsClient.get()
-        val seed = client?.gameSeed
-        state = if (seed != null) TetrisGameState(seed) else TetrisGameState()
         addGameScoreToHUD(linesLabel)
+
+        val client = RetrowarsClient.get()
+        random = if (client != null && client.gameSeed != 0L) {
+            Random(client.gameSeed)
+        } else {
+            Random()
+        }
     }
 
     override fun show() {
@@ -268,7 +276,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         state.currentPieceRotations = state.nextPieceRotations
         state.currentPiece = state.currentPieceRotations[0]
 
-        state.nextPieceRotations = Tetronimos.random()
+        state.nextPieceRotations = Tetronimos.random(random)
     }
 
     override fun onReceiveDamage(strength: Int) {
