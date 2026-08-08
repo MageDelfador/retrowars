@@ -2,7 +2,8 @@ name: Build project
 
 on:
   push:
-
+  workflow_dispatch:
+  
 jobs:
   build-gradle:
     runs-on: ubuntu-latest
