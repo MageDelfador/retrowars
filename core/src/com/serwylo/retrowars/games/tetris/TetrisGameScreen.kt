@@ -26,7 +26,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         const val TAG = "TetrisGameScreen"
     }
 
-    private var state = TetrisGameState()
+    private val state = TetrisGameState(RetrowarsClient.get()?.gameSeed)
     private val sounds = TetrisSoundLibrary()
     override fun getSoundLibrary() = sounds
 
