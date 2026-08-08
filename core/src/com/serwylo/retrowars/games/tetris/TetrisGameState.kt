@@ -55,26 +55,17 @@ class TetrisGameState(private val random: Random = Random.Default) {
     var timer = 0f
 
     var cells: List<MutableList<CellState>> = (0 until CELLS_HIGH).map {
-        (0 until CELLS_WIDE).map {
-            CellState.Empty
-        }.toMutableList()
+        (0 until CELLS_WIDE).map { CellState.Empty }.toMutableList()
     }
 
     var lines: Int = 0
 
-    var currentPieceRotations: TetronimoOrientations
-    var currentPiece: Tetronimo
-    var currentX: Int
-    var currentY: Int
-    var nextPieceRotations: TetronimoOrientations
+    var currentPieceRotations: TetronimoOrientations = Tetronimos.random(random)
+    var currentPiece: Tetronimo = currentPieceRotations[0]
+    var currentX = CELLS_WIDE / 2 - 1
+    var currentY = 0
 
-    init {
-        currentPieceRotations = Tetronimos.random(random)
-        currentPiece = currentPieceRotations[0]
-        currentX = CELLS_WIDE / 2 - 1
-        currentY = 0
-        nextPieceRotations = Tetronimos.random(random)
-    }
+    var nextPieceRotations: TetronimoOrientations = Tetronimos.random(random)
 
     fun chooseNewTetronimo() {
         currentX = CELLS_WIDE / 2 - 1
