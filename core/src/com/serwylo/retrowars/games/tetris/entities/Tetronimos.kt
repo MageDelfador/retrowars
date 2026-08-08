@@ -3,6 +3,8 @@ package com.serwylo.retrowars.games.tetris.entities
 typealias Tetronimo = List<List<Boolean>>
 typealias TetronimoOrientations = List<Tetronimo>
 
+import kotlin.random.Random
+
 object Tetronimos {
 
     private const val x = true
