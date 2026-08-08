@@ -131,9 +131,18 @@ abstract class GameScreen(
             networkCloseListener = { code, message -> game.showNetworkError(code, message) },
             playerStatusChangedListener = { player, status -> handlePlayerStatusChange(player, status) },
             scoreChangedListener = { _, _ -> handleScoreChange() },
-            scoreBreakpointListener = { player, strength -> handleBreakpointChange(player, strength) }
+            scoreBreakpointListener = { player, strength -> handleBreakpointChange(player, strength) },
+			startGameListener = { onStartMultiplayerGame() }
         )
     }
+
+	protected open fun onStartMultiplayerGame() {
+		score = 0L
+		isEnding = false
+		if (state == State.Finished) {
+			changeState(State.Playing)
+		}
+	}
 
     private fun changeState(newState: State) {
         previousState = state

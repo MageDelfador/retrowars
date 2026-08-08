@@ -49,7 +49,7 @@ class RetrowarsClient(host: String, port: Int) {
         }
 
     }
-    var gameSeed: Long = 0
+    var gameSeed: Long? = null
 	
     val players = mutableListOf<Player>()
     val scores = mutableMapOf<Player, Long>()
@@ -172,7 +172,10 @@ class RetrowarsClient(host: String, port: Int) {
                         is Network.Client.OnPlayerScored -> onScoreChanged(obj.id, obj.score)
                         is Network.Client.OnPlayerStatusChange -> onStatusChanged(obj.id, obj.status)
                         is Network.Client.OnReturnToLobby -> onReturnToLobby(obj.newGames)
-                        is Network.Client.OnStartGame -> onStartGame()
+                        is Network.Client.OnStartGame -> {
+							gameSeed = obj.seed
+							onStartGame()
+						}
                         is Network.Client.OnFatalError -> onFatalError(obj.code, obj.message)
                     }
                 }
@@ -200,7 +203,6 @@ class RetrowarsClient(host: String, port: Int) {
         // We reuse the same servers/clients many time over if you finish a game and immediately
         // start a new one. Therefore we need to forget all we know about peoples scores before
         // continuing with a new game.
-		gameSeed = msg.seed
         lastSurvivor = null
         scores.clear()
         scoreBreakpoints.clear()

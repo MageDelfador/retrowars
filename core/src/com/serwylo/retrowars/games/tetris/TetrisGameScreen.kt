@@ -17,9 +17,6 @@ import com.serwylo.retrowars.input.TetrisSoftController
 import com.serwylo.retrowars.ui.ENEMY_ATTACK_COLOUR
 import com.serwylo.retrowars.utils.Options
 
-import com.serwylo.retrowars.net.RetrowarsClient
-import kotlin.random.Random
-
 class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400f, 400f) {
 
     companion object {
@@ -27,23 +24,23 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         const val TAG = "TetrisGameScreen"
     }
 
-    private val state = TetrisGameState()
+    private var state = TetrisGameState()
     private val sounds = TetrisSoundLibrary()
-	private lateinit var random: Random
     override fun getSoundLibrary() = sounds
 
     private val linesLabel = Label("0 lines", game.uiAssets.getStyles().label.large)
 
     init {
         addGameScoreToHUD(linesLabel)
-
-        val client = RetrowarsClient.get()
-        random = if (client != null && client.gameSeed != 0L) {
-            Random(client.gameSeed)
-        } else {
-            Random()
-        }
     }
+
+	override fun onStartMultiplayerGame() {
+		super.onStartMultiplayerGame()
+		val seed = RetrowarsClient.get()?.gameSeed
+		state = TetrisGameState(seed)
+		linesLabel.setText("0 lines")
+
+	}
 
     override fun show() {
         Gdx.input.inputProcessor = getInputProcessor()
@@ -276,7 +273,7 @@ class TetrisGameScreen(game: RetrowarsGame) : GameScreen(game, Games.tetris, 400
         state.currentPieceRotations = state.nextPieceRotations
         state.currentPiece = state.currentPieceRotations[0]
 
-        state.nextPieceRotations = Tetronimos.random(random)
+        state.nextPieceRotations = state.randomTetronimo()
     }
 
     override fun onReceiveDamage(strength: Int) {

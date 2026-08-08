@@ -553,19 +553,18 @@ class RetrowarsServer(private val platform: Platform, private val config: Config
     }
 
     private fun startGame(room: Room?) {
-        if (room == null) {
-            return
-        }
+		if (room == null) return
 
-        Gdx.app.debug(TAG, "Server sending request to all players telling them to start the game.")
-        logger.info("Starting game. Room: ${room.id}, players: [${room.players.map { it.id }.joinToString(", ")}]")
-        room.scores.clear()
-        room.lastGame = Date()
-        room.players.onEach { it.status = Player.Status.playing }
-        val seed = Random.nextLong()
-        room.sendToAll(Network.Client.OnStartGame(seed), connections)
+		Gdx.app.debug(TAG, "Server sending request to all players telling them to start the game.")
+		logger.info("Starting game. Room: ${room.id}, players: [${room.players.map { it.id }.joinToString(", ")}]")
+		room.scores.clear()
+		room.lastGame = Date()
+		room.players.onEach { it.status = Player.Status.playing }
 
-        lastGame = room.lastGame
+		val seed = Random.nextLong()
+		room.sendToAll(Network.Client.OnStartGame(seed), connections)
+
+		lastGame = room.lastGame
     }
 
 }

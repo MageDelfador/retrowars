@@ -4,8 +4,10 @@ import com.serwylo.retrowars.games.tetris.entities.Tetronimo
 import com.serwylo.retrowars.games.tetris.entities.TetronimoOrientations
 import com.serwylo.retrowars.games.tetris.entities.Tetronimos
 
-class TetrisGameState() {
+import kotlin.random.Random
 
+class TetrisGameState(seed: Long? = null) {
+	
     companion object {
 
         private val SCORE_PER_LINES = listOf(
@@ -69,25 +71,19 @@ class TetrisGameState() {
         }.toMutableList()
     }
 
+	private val random: Random = if (seed != null) Random(seed) else Random
+	
     var lines: Int = 0
 
-    var currentPieceRotations: TetronimoOrientations = Tetronimos.random()
+    var currentPieceRotations: TetronimoOrientations = randomTetronimo()
     var currentPiece: Tetronimo = currentPieceRotations[0]
     var currentX = CELLS_WIDE / 2 - 1
     var currentY = 0
 
-    var nextPieceRotations: TetronimoOrientations = Tetronimos.random()
+    var nextPieceRotations: TetronimoOrientations = randomTetronimo()
 
-    private val random = if (seed != null) Random(seed) else Random()
-	
-	private fun chooseNewTetronimo() {
-        state.currentX = CELLS_WIDE / 2 - 1
-        state.currentY = 0
-        state.currentPieceRotations = state.nextPieceRotations
-        state.currentPiece = state.currentPieceRotations[0]
-
-        state.nextPieceRotations = Tetronimos.random(random)
-    }
+	private fun randomTetronimo(): TetronimoOrientations =
+        Tetronimos.all[random.nextInt(Tetronimos.all.size)]
 }
 
 enum class CellState {

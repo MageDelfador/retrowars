@@ -3,8 +3,6 @@ package com.serwylo.retrowars.games.tetris.entities
 typealias Tetronimo = List<List<Boolean>>
 typealias TetronimoOrientations = List<Tetronimo>
 
-import kotlin.random.Random
-
 object Tetronimos {
 
     private const val x = true
@@ -209,9 +207,8 @@ object Tetronimos {
 
     )
 
-    private val all: List<TetronimoOrientations> = listOf(O, I, T, S, Z, J, L)
+    internal val all: List<TetronimoOrientations> = listOf(O, I, T, S, Z, J, L)
 
-    fun random(random: Random): TetronimoOrientations = all.random(random)
     fun random(): TetronimoOrientations = all.random()
 
 }
